@@ -30,7 +30,10 @@ public class Program
         
         do
         {
-    
+            if (!Console.IsOutputRedirected)
+            {
+                Console.Clear();
+            }
             Move userMove;
             
             do
@@ -159,7 +162,7 @@ public class Program
             }
 
             Console.Write("Score: {0} wins, {1} losses, {2} draws.", wins, losses, draws);
-            Console.WriteLine("User: {0} vs Computer: {1}", userMove, computerMove);
+            Console.ReadLine();
         }
         while(true);
     }
