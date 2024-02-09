@@ -1,4 +1,5 @@
-﻿using System.Reflection.Metadata;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection.Metadata;
 using System.Runtime.Intrinsics.Arm;
 using Microsoft.VisualBasic;
 
@@ -9,10 +10,12 @@ public class Program
         Rock,
         Paper,
         Scissors,
+        Spock,
+        Lizard,
         Quit
     }
     const int MinMove = (int)Move.Rock;
-    const int MaxMove = (int)Move.Scissors;
+    const int MaxMove = (int)Move.Lizard;
 
     enum Outcome {
         Draw = 0,
@@ -38,7 +41,7 @@ public class Program
             
             do
             {
-                Console.WriteLine("Choose [r]ock, [p]aper, [s]cissors, or [q]uit.");
+                Console.WriteLine("Choose [r]ock, [p]aper, [s]cissors, [sp]ock, [l]izard, or [q]uit.");
                 string input = Console.ReadLine().ToLower();
                 if (input == "r" || input == "rock")
                 {
@@ -51,6 +54,14 @@ public class Program
                 else if (input == "s" || input == "scissors")
                 {
                     userMove = Move.Scissors;
+                }
+                else if (input == "sp" || input == "spock")
+                {
+                    userMove = Move.Spock;
+                }
+                else if (input == "l" || input == "lizard")
+                {
+                    userMove = Move.Lizard;
                 }
                 else if (input == "q" || input == "quit")
                 {
@@ -71,11 +82,11 @@ public class Program
             Outcome outcome = Outcome.Draw; 
             if (userMove == Move.Rock) 
             {
-                if (computerMove == Move.Paper) 
+                if (computerMove == Move.Paper || computerMove == Move.Spock) 
                 {
                     outcome = Outcome.ComputerWin; 
                 }
-                else if (computerMove == Move.Scissors) 
+                else if (computerMove == Move.Scissors || computerMove == Move.Lizard) 
                 {
                     outcome = Outcome.UserWin; 
                 }
@@ -86,11 +97,11 @@ public class Program
             }
             else if (userMove == Move.Paper)
             {
-                if (computerMove == Move.Rock)
+                if (computerMove == Move.Rock || computerMove == Move.Lizard)
                 {
                     outcome = Outcome.UserWin;
                 }
-                else if (computerMove == Move.Scissors)
+                else if (computerMove == Move.Scissors || computerMove == Move.Spock)
                 {
                     outcome = Outcome.ComputerWin;
                 }
@@ -101,15 +112,45 @@ public class Program
                 }
                 else if (userMove == Move.Scissors)
                 {
-                    if (computerMove == Move.Rock)
+                    if (computerMove == Move.Rock || computerMove == Move.Spock)
                     {
                         outcome = Outcome.ComputerWin;
                     }
-                    else if (computerMove == Move.Paper)
+                    else if (computerMove == Move.Paper || computerMove == Move.Lizard)
                     {
                         outcome = Outcome.UserWin;
                     }
                     else if (computerMove == Move.Scissors)
+                    {
+                        outcome = Outcome.Draw;
+                    }
+                }
+                else if (userMove == Move.Spock)
+                {
+                    if (computerMove == Move.Rock || computerMove == Move.Scissors)
+                    {
+                        outcome = Outcome.UserWin;
+                    }
+                    else if (computerMove == Move.Paper || computerMove == Move.Lizard)
+                    {
+                        outcome = Outcome.ComputerWin;
+                    }
+                    else if (computerMove == Move.Spock)
+                    {
+                        outcome = Outcome.Draw;
+                    }
+                }
+                else if (userMove == Move.Lizard)
+                {
+                    if (computerMove == Move.Spock || computerMove == Move.Paper)
+                    {
+                        outcome = Outcome.UserWin;
+                    }
+                    else if (computerMove == Move.Rock || computerMove == Move.Scissors)
+                    {
+                        outcome = Outcome.ComputerWin;
+                    }
+                    else if (computerMove == Move.Lizard)
                     {
                         outcome = Outcome.Draw;
                     }
@@ -126,6 +167,12 @@ public class Program
                     case Move.Scissors:
                         Console.Write("You chose scissors ");
                         break;
+                    case Move.Spock:
+                        Console.Write("You chose spock ");
+                        break;
+                    case Move.Lizard:
+                        Console.Write("You chose lizard ");
+                        break;
                 }
 
                 switch (computerMove)
@@ -138,6 +185,12 @@ public class Program
                         break;
                     case Move.Scissors:
                         Console.Write("and computer chose scissors.");
+                        break;
+                    case Move.Spock:
+                        Console.Write("and computer chose spock.");
+                        break;
+                    case Move.Lizard:
+                        Console.Write("and computer chose lizard.");
                         break;
                 }
 
