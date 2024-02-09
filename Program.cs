@@ -1,9 +1,20 @@
-﻿using System.Runtime.Intrinsics.Arm;
+﻿using System.Reflection.Metadata;
+using System.Runtime.Intrinsics.Arm;
 using Microsoft.VisualBasic;
 
 public class Program
 {
-    public static void Main()
+    const int Rock = 0;
+    const int Paper = 1;
+    const int Scissors = 2;
+    const int Quit = 3;
+    const int Invalid = -1;
+
+    //outcomes
+    const int Draw = 0;
+    const int UserWin = -1;
+    const int ComputerWin = 1;
+        public static void Main()
     {
         int seed = (int)DateTime.Now.Ticks;
         Random random = new Random();
@@ -22,103 +33,101 @@ public class Program
                 string input = Console.ReadLine().ToLower();
                 if (input == "r" || input == "rock")
                 {
-                    userMove = 0;
+                    userMove = Rock;
                 }
                 else if (input == "p" || input == "paper")
                 {
-                    userMove = 1;
+                    userMove = Paper;
                 }
                 else if (input == "s" || input == "scissors")
                 {
-                    userMove = 2;
+                    userMove = Scissors;
                 }
                 else if (input == "q" || input == "quit")
                 {
-                    userMove = 3;
+                    userMove = Quit;
                 }
             
                 else
                 {
                     Console.WriteLine("Invalid entry");
-                    userMove = -1; //invalid
+                    userMove = Invalid; 
                 }
-            }while (userMove == -1);
+            }while (userMove == Invalid);
 
-            if (userMove == 3) return;
+            if (userMove == Quit) return;
 
-            int computerMove = random.Next(0, 3);
+            int computerMove = random.Next(Rock, Scissors + 1);
 
-
-
-            int result = 0; //draw
-            if (userMove == 0) //rock
+            int result = Invalid; 
+            if (userMove == Rock) 
             {
-                if (computerMove == 1) //paper
+                if (computerMove == Paper) 
                 {
-                    result = 1; //computer win
+                    result = ComputerWin; 
                 }
-                else if (computerMove == 2) //scissors
+                else if (computerMove == Scissors) 
                 {
-                    result = -1; //user win
+                    result = UserWin; 
                 }
-                else //rock
+                else if (computerMove == Rock)
                 {
-                    result = 0; //draw
+                    result = Draw; 
                 }
             }
-            else if (userMove == 1) //paper
+            else if (userMove == Paper)
             {
-                if (computerMove == 0) //rock
+                if (computerMove == Rock)
                 {
-                    result = -1; //computer wins
+                    result = UserWin;
                 }
-                else if (computerMove == 2) //scissors
+                else if (computerMove == Scissors)
                 {
-                    result = 1; //computer wins
+                    result = ComputerWin;
                 }
-                else  //paper
+                else if (computerMove == Paper)
                 {
-                    result = 0;
+                    result = Draw;
                 }
                 }
-                else if (userMove == 2) //scissors
+                else if (userMove == Scissors)
                 {
-                    if (computerMove == 0) //rock
+                    if (computerMove == Rock)
                     {
-                        result = 1; //computer win
+                        result = ComputerWin;
                     }
-                    else if (computerMove == 1) //paper
+                    else if (computerMove == Paper)
                     {
-                        result = -1; //userwin
+                        result = UserWin;
                     }
-                    else //scissors
+                    else if (computerMove == Scissors)
                     {
-                        result = 0;
+                        result = Draw;
                     }
                 }
 
                 switch (userMove)
                 {
-                    case 0:
+                    case Rock:
                         Console.Write("You chose rock ");
                         break;
-                    case 1:
+                    case Paper:
                         Console.Write("You chose paper ");
                         break;
-                    case 2:
+                    case Scissors:
                         Console.Write("You chose scissors ");
                         break;
                 }
 
                 switch (computerMove)
                 {
-                    case 0:
+                    case Rock:
                         Console.Write("and computer chose rock.");
                         break;
-                    case 1:
+                    case Paper:
                         Console.Write("and computer chose paper.");
                         break;
-                    case 2:
+                    case Scissors:
                         Console.Write("and computer chose scissors.");
                         break;
                 }
@@ -126,15 +135,15 @@ public class Program
         
             switch (result)
             {
-                case 0: //draw
+                case Draw:
                     Console.WriteLine("The game was a draw.");
                     draws++;
                     break;
-                case 1: //computer win
+                case ComputerWin:
                     Console.WriteLine("You lose.");
                     losses++;
                     break;
-                case -1: //user win
+                case UserWin:
                     Console.WriteLine("You win.");
                     wins++;
                     break;
