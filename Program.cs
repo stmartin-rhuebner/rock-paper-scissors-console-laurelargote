@@ -4,16 +4,22 @@ using Microsoft.VisualBasic;
 
 public class Program
 {
-    const int Rock = 0;
-    const int Paper = 1;
-    const int Scissors = 2;
-    const int Quit = 3;
-    const int Invalid = -1;
+    enum Move {
+        Invalid = -1,
+        Rock,
+        Paper,
+        Scissors,
+        Quit
+    }
+    const int MinMove = (int)Move.Rock;
+    const int MaxMove = (int)Move.Scissors;
 
-    //outcomes
-    const int Draw = 0;
-    const int UserWin = -1;
-    const int ComputerWin = 1;
+    enum Outcome {
+        Draw = 0,
+        UserWin = -1,
+        ComputerWin = 1
+    }
+    
         public static void Main()
     {
         int seed = (int)DateTime.Now.Ticks;
@@ -25,7 +31,7 @@ public class Program
         do
         {
     
-            int userMove;
+            Move userMove;
             
             do
             {
@@ -33,117 +39,117 @@ public class Program
                 string input = Console.ReadLine().ToLower();
                 if (input == "r" || input == "rock")
                 {
-                    userMove = Rock;
+                    userMove = Move.Rock;
                 }
                 else if (input == "p" || input == "paper")
                 {
-                    userMove = Paper;
+                    userMove = Move.Paper;
                 }
                 else if (input == "s" || input == "scissors")
                 {
-                    userMove = Scissors;
+                    userMove = Move.Scissors;
                 }
                 else if (input == "q" || input == "quit")
                 {
-                    userMove = Quit;
+                    userMove = Move.Quit;
                 }
             
                 else
                 {
                     Console.WriteLine("Invalid entry");
-                    userMove = Invalid; 
+                    userMove = Move.Invalid; 
                 }
-            }while (userMove == Invalid);
+            }while (userMove == Move.Invalid);
 
-            if (userMove == Quit) return;
+            if (userMove == Move.Quit) return;
 
-            int computerMove = random.Next(Rock, Scissors + 1);
+            Move computerMove = (Move)random.Next(MinMove,MaxMove);
 
-            int result = Invalid; 
-            if (userMove == Rock) 
+            Outcome outcome = Outcome.Draw; 
+            if (userMove == Move.Rock) 
             {
-                if (computerMove == Paper) 
+                if (computerMove == Move.Paper) 
                 {
-                    result = ComputerWin; 
+                    outcome = Outcome.ComputerWin; 
                 }
-                else if (computerMove == Scissors) 
+                else if (computerMove == Move.Scissors) 
                 {
-                    result = UserWin; 
+                    outcome = Outcome.UserWin; 
                 }
-                else if (computerMove == Rock)
+                else if (computerMove == Move.Rock)
                 {
-                    result = Draw; 
+                    outcome = Outcome.Draw; 
                 }
             }
-            else if (userMove == Paper)
+            else if (userMove == Move.Paper)
             {
-                if (computerMove == Rock)
+                if (computerMove == Move.Rock)
                 {
-                    result = UserWin;
+                    outcome = Outcome.UserWin;
                 }
-                else if (computerMove == Scissors)
+                else if (computerMove == Move.Scissors)
                 {
-                    result = ComputerWin;
+                    outcome = Outcome.ComputerWin;
                 }
-                else if (computerMove == Paper)
+                else if (computerMove == Move.Paper)
                 {
-                    result = Draw;
+                    outcome = Outcome.Draw;
                 }
                 }
-                else if (userMove == Scissors)
+                else if (userMove == Move.Scissors)
                 {
-                    if (computerMove == Rock)
+                    if (computerMove == Move.Rock)
                     {
-                        result = ComputerWin;
+                        outcome = Outcome.ComputerWin;
                     }
-                    else if (computerMove == Paper)
+                    else if (computerMove == Move.Paper)
                     {
-                        result = UserWin;
+                        outcome = Outcome.UserWin;
                     }
-                    else if (computerMove == Scissors)
+                    else if (computerMove == Move.Scissors)
                     {
-                        result = Draw;
+                        outcome = Outcome.Draw;
                     }
                 }
 
                 switch (userMove)
                 {
-                    case Rock:
+                    case Move.Rock:
                         Console.Write("You chose rock ");
                         break;
-                    case Paper:
+                    case Move.Paper:
                         Console.Write("You chose paper ");
                         break;
-                    case Scissors:
+                    case Move.Scissors:
                         Console.Write("You chose scissors ");
                         break;
                 }
 
                 switch (computerMove)
                 {
-                    case Rock:
+                    case Move.Rock:
                         Console.Write("and computer chose rock.");
                         break;
-                    case Paper:
+                    case Move.Paper:
                         Console.Write("and computer chose paper.");
                         break;
-                    case Scissors:
+                    case Move.Scissors:
                         Console.Write("and computer chose scissors.");
                         break;
                 }
 
         
-            switch (result)
+            switch (outcome)
             {
-                case Draw:
+                case Outcome.Draw:
                     Console.WriteLine("The game was a draw.");
                     draws++;
                     break;
-                case ComputerWin:
+                case Outcome.ComputerWin:
                     Console.WriteLine("You lose.");
                     losses++;
                     break;
-                case UserWin:
+                case Outcome.UserWin:
                     Console.WriteLine("You win.");
                     wins++;
                     break;
